@@ -7,20 +7,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Audio extends Model
+class Suggestion extends Model
 {
     use HasFactory;
     use HasUlids;
 
-    protected $table = 'audios';
-
     protected $fillable = [
-        'inFrench',
-        'inFongbe',
-        'inYoruba',
+        'name',
+        'email',
+        'contact',
+        'message',
     ];
 
-
+    /**
+     * @return BelongsTo
+     */
     public function word(): BelongsTo
     {
         return $this->belongsTo(Word::class);

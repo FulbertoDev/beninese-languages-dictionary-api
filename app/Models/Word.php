@@ -18,7 +18,6 @@ class Word extends Model
         'inFrench',
         'inFongbe',
         'inYoruba',
-        'slug',
         'isValidated'
     ];
 
@@ -35,4 +34,10 @@ class Word extends Model
     {
         return $this->hasOne(Audio::class);
     }
+
+    public function suggestion(): HasOne
+    {
+        return $this->hasOne(Suggestion::class);
+    }
+
 }
