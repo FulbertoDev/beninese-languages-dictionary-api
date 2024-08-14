@@ -15,10 +15,20 @@ class WordController extends Controller
 {
     public function fetch()
     {
+        $releaseCount = Release::all()->pluck('id')->count();
+        if ($releaseCount <= 0) {
+            return response()->json([], 404);
+        }
         $words = Word::whereIsvalidated(true)->get();
         $count = $words->count();
+        $latestRelease = Release::query()->orderBy('versionCode', 'desc')->get()->first();
+
         return response()->json(
-            ["count" => $count, "data" => WordResource::collection($words),]
+            [
+                "count" => $count,
+                "version" => $latestRelease->versionCode,
+                "data" => WordResource::collection($words),
+            ]
         );
     }
 

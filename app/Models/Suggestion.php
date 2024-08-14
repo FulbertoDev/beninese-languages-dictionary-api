@@ -16,7 +16,7 @@ class Suggestion extends Model
         'name',
         'email',
         'contact',
-        'message',
+        'data',
     ];
 
     /**
