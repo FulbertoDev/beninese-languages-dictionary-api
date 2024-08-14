@@ -10,12 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('audios', function (Blueprint $table) {
+        Schema::create('suggestions', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('word_id')->constrained();
-            $table->text('inFrench')->nullable();
-            $table->text('inFongbe')->nullable();
-            $table->text('inYoruba')->nullable();
+            $table->foreignUlid('word_id')->nullable()->constrained();
+            $table->text('name')->nullable();
+            $table->text('email')->nullable();
+            $table->text('contact')->nullable();
+            $table->longText('message')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('audios');
+        Schema::dropIfExists('suggestions');
     }
 };
