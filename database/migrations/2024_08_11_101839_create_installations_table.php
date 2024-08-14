@@ -10,14 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('suggestions', function (Blueprint $table) {
+        Schema::create('installations', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('word_id')->nullable()->constrained();
-            $table->text('name')->nullable(false);
-            $table->text('email')->nullable(false);
-            $table->text('contact')->nullable(false);
-            $table->json('data')->nullable(false);
-            $table->string('deviceUuid');
+            $table->text('identifier')->nullable();
+            $table->text('model')->nullable();
+            $table->text('systemName')->nullable();
+            $table->text('systemVersion')->nullable();
+            $table->text('brand')->nullable();
+            $table->boolean('hasSubscribed')->default(0);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('suggestions');
+        Schema::dropIfExists('installations');
     }
 };
