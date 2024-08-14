@@ -57,7 +57,6 @@ class ReleaseController extends Controller
         ]);
         return response()->json($release);
 
-
     }
 
 
