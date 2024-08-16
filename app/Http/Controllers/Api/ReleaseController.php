@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ReducedReleaseResource;
+use App\Http\Resources\ReleaseResource;
 use App\Models\Release;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +34,7 @@ class ReleaseController extends Controller
             $last = $latestRelease[0]->versionCode;
             $nextIndex = $last + 1;
             $words = $request->get("words");
-            $content = array_merge($words, $latestRelease[0]->details['content']);
+            $content = array_merge($words, explode(";",$latestRelease[0]->details['content']));
             $noChanges = $latestRelease[0]->details['content'] == $words;
         }
 
@@ -52,19 +54,22 @@ class ReleaseController extends Controller
             "versionName" => $request->get('version'),
             "details" => [
                 "count" => $wordsCount,
-                "content" => $nextContent,
+                "content" => join(";", $nextContent),
             ]
         ]);
-        return response()->json($release);
+
+        $response = ($request->user()!=null && $request->user()->isAdmin) ? ReleaseResource::make($release) : ReducedReleaseResource::make($release);
+        return response()->json($response);
+
 
     }
 
 
-    public function getReleases()
+    public function getReleases(Request $request)
     {
-        //$releases = Release::query()->orderBy('versionCode','desc')->get();
         $releases = Release::latest('versionCode')->get();
-        return response()->json($releases);
+        $response = ($request->user()!=null && $request->user()->isAdmin) ? ReleaseResource::collection($releases) : ReducedReleaseResource::collection($releases);
+        return response()->json($response);
     }
 
 }
