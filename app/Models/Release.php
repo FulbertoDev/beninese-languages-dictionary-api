@@ -19,7 +19,8 @@ class Release extends Model
 
 
     protected $casts = [
-        'details' => 'json'
+        'details' => 'json',
+        'versionCode' => 'integer'
     ];
 
 }

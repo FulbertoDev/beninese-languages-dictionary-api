@@ -94,12 +94,13 @@ class WordController extends Controller
         $words = Word::whereIsvalidated(true)->pluck('id');
         $count = count($words);
 
+
         Release::create([
             "versionCode" => 1,
             "versionName" => '1.0',
             "details" => [
                 "count" => $count,
-                "content" => $words,
+                "content" => $words->join(";"),
             ]
         ]);
 
