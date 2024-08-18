@@ -35,7 +35,7 @@ class ReleaseController extends Controller
             $nextIndex = $last + 1;
             $words = $request->get("words");
             $content = array_merge($words, explode(";",$latestRelease[0]->details['content']));
-            $noChanges = $latestRelease[0]->details['content'] == $words;
+            $noChanges = explode(";",$latestRelease[0]->details['content']) == $words;
         }
 
         if ($noChanges) {
