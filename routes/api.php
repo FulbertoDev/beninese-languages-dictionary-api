@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/users/installation', [InstallationController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/words', [WordController::class, 'fetch']);
+Route::get('/words/init', [WordController::class, 'init']);
+Route::get('/words/update', [WordController::class, 'fetchUpdate']);
 Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
 Route::post('/release', [ReleaseController::class, 'store']);
 Route::get('/release', [ReleaseController::class, 'getReleases']);
