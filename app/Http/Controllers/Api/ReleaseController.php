@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReducedReleaseResource;
 use App\Http\Resources\ReleaseResource;
+use App\Jobs\ProcessWordRelease;
 use App\Models\Release;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Validator;
 
 class ReleaseController extends Controller
@@ -34,8 +36,8 @@ class ReleaseController extends Controller
             $last = $latestRelease[0]->versionCode;
             $nextIndex = $last + 1;
             $words = $request->get("words");
-            $content = array_merge($words, explode(";",$latestRelease[0]->details['content']));
-            $noChanges = explode(";",$latestRelease[0]->details['content']) == $words;
+            $content = array_merge($words, explode(";", $latestRelease[0]->details['content']));
+            $noChanges = explode(";", $latestRelease[0]->details['content']) == $words;
         }
 
         if ($noChanges) {
@@ -58,7 +60,9 @@ class ReleaseController extends Controller
             ]
         ]);
 
-        $response = ($request->user()!=null && $request->user()->isAdmin) ? ReleaseResource::make($release) : ReducedReleaseResource::make($release);
+        Artisan::call('app:update-word-status', ['words' => $release->details['content']]);
+
+        $response = ($request->user() != null && $request->user()->isAdmin) ? ReleaseResource::make($release) : ReducedReleaseResource::make($release);
         return response()->json($response);
 
 
@@ -68,7 +72,7 @@ class ReleaseController extends Controller
     public function getReleases(Request $request)
     {
         $releases = Release::latest('versionCode')->get();
-        $response = ($request->user()!=null && $request->user()->isAdmin) ? ReleaseResource::collection($releases) : ReducedReleaseResource::collection($releases);
+        $response = ($request->user() != null && $request->user()->isAdmin) ? ReleaseResource::collection($releases) : ReducedReleaseResource::collection($releases);
         return response()->json($response);
     }
 
