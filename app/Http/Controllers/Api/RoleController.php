@@ -38,7 +38,47 @@ class RoleController extends Controller
 
     public function setPermissions(Request $request, string $id)
     {
+        $role = Role::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'permissions' => [
+                'required',
+                'list',
+            ],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $data = $request->get('permissions');
+        $permissions = Permission::all()->pluck('name')->toArray();
+
+        $diffElements = array_diff($data, $permissions);
+        if (!empty($diffElements)) {
+            return response()->json([
+                "message" => "Some permissions don't exist"
+            ], 404);
+        }
+
+
+        foreach ($permissions as $permissionValue) {
+            $permission = Permission::where('name', $permissionValue)->firstOrFail();
+            $role->revokePermissionTo($permission);
+        }
+
+        foreach ($data as $permissionValue) {
+            $permission = Permission::where('name', $permissionValue)->firstOrFail();
+            $role->givePermissionTo($permission);
+
+        }
+
+        $role = Role::findOrFail($id);
+        return response()->json(RoleResource::make($role));
+
     }
+
+
 
     public function update(Request $request, string $id)
     {
@@ -67,7 +107,7 @@ class RoleController extends Controller
 
     public function getRoles()
     {
-        $roles = Role::where('name', '!=', RolesEnum::ADMIN_ROLE->value)->get();
+        $roles = Role::all();
         return response()->json(RoleResource::collection($roles));
     }
 

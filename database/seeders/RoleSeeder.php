@@ -23,10 +23,16 @@ class RoleSeeder extends Seeder
             'description' => RolesEnum::ADMIN_ROLE->label(),
         ]);
 
+        $helperRole = Role::create([
+            'name' => RolesEnum::HELPER_ROLE->value,
+            'description' => RolesEnum::HELPER_ROLE->label(),
+        ]);
+
+
         foreach (PermissionsEnum::cases() as $role) {
             $permission = Permission::create(['name' => $role->value, 'description' => $role->label(),]);
             $adminRole->givePermissionTo($permission);
-
+            $helperRole->givePermissionTo($permission);
         }
     }
 }
