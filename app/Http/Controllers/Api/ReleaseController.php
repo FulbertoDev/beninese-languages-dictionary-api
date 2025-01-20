@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\RolesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReducedReleaseResource;
 use App\Http\Resources\ReleaseResource;
@@ -62,18 +63,24 @@ class ReleaseController extends Controller
 
         Artisan::call('app:update-word-status', ['words' => $release->details['content']]);
 
-        $response = ($request->user() != null && $request->user()->isAdmin) ? ReleaseResource::make($release) : ReducedReleaseResource::make($release);
-        return response()->json($response);
 
-
+        if ($request->user()->hasRole(RolesEnum::ADMIN_ROLE)) {
+            return response()->json(ReleaseResource::make($release));
+        } else {
+            return response()->json(ReducedReleaseResource::make($release));
+        }
     }
 
 
     public function getReleases(Request $request)
     {
         $releases = Release::latest('versionCode')->get();
-        $response = ($request->user() != null && $request->user()->isAdmin) ? ReleaseResource::collection($releases) : ReducedReleaseResource::collection($releases);
-        return response()->json($response);
+
+        if ($request->user()->hasRole(RolesEnum::ADMIN_ROLE)) {
+            return response()->json(ReleaseResource::collection($releases));
+        } else {
+            return response()->json(ReducedReleaseResource::collection($releases));
+        }
     }
 
 }

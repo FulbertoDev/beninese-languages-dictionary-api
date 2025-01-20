@@ -67,7 +67,7 @@ class RoleController extends Controller
 
     public function getRoles()
     {
-        $roles = Role::where('name', '!=', RolesEnum::ADMIN_ROLE->value)->get();
+        $roles = Role::all();
         return response()->json(RoleResource::collection($roles));
     }
 
