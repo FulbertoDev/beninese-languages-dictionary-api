@@ -10,7 +10,6 @@ enum PermissionsEnum: string
     case CAN_DELETE_WORD = "can-delete-word";
     case CAN_MANAGE_USERS = "can-manage-users";
 
-    // extra helper to allow for greater customization of displayed values, without disclosing the name/value data directly
     public function label(): string
     {
         return match ($this) {

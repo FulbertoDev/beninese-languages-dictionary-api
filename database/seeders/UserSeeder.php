@@ -23,7 +23,6 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'email' => 'fulbertodev@gmail.com',
             'password' => Hash::make('fulbertodev'),
-            'isAdmin' => true,
         ]);
 
         $adminRole = Role::where('name', RolesEnum::ADMIN_ROLE->value)->get();

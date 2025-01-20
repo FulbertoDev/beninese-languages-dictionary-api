@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,9 +24,8 @@ class UserResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'email'=>$this->email,
-            'abilities'=>$this->abilities,
-            'isAdmin'=>$this->isAdmin,
             'isActive'=>$this->isActive,
+            'role'=> RoleResource::make(Role::where('name',$this->getRoleNames()[0])->first()),
         ];
     }
 }

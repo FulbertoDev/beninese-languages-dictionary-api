@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::group([
-        'middleware' => ['role:' . RolesEnum::ADMIN_ROLE->value,]
-    ], function () {
+    Route::group(['middleware' => ['role:' . RolesEnum::ADMIN_ROLE->value,]], function () {
         Route::get('/users', [UserController::class, 'getUsers']);
+        Route::get('/user', [UserController::class, 'getUser']);
         Route::post('/create-user', [UserController::class, 'create']);
         Route::get('/role', [RoleController::class, 'getRoles']);
         Route::post('/role', [RoleController::class, 'store']);
