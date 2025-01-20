@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\RolesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PermissionResource;
 use App\Http\Resources\RoleResource;
@@ -23,6 +22,7 @@ class RoleController extends Controller
             'name' => 'required|string|max:255|unique:roles',
             'description' => 'required|string|max:255',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }

@@ -17,11 +17,12 @@ class AuthController extends Controller
             'email' => 'required|string|max:255',
             'password' => 'required|string'
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-        $credentials = $request->only('email', 'password');
 
+        $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Invalid credentials'
@@ -39,6 +40,12 @@ class AuthController extends Controller
 
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        if(!$user->isActive){
+            return response()->json([
+                'message' => 'Account not active'
+            ], 401);
+        }
 
         return response()->json([
             'token' => $token,
