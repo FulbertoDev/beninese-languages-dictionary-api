@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\MonerooHelpers;
 use App\Helpers\PaymentStatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PaymentResource;
+use App\Models\Installation;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
@@ -44,20 +45,16 @@ class PaymentController extends Controller
             $headers = array("Authorization" => "Bearer " . env('MONEROO_SECRET_SANDBOX_KEY'));
 
 
-            $username = Str::of($payment->name)->split('/[\s,]+/');
-            $firstname = $username[0];
-            $lastname = $username->count() > 1 ? $username[1] : "-";
-
             $data = [
                 "amount" => $payment->amount,
                 "currency" => MonerooHelpers::currency,
                 "description" => "Paiement #" . $payment->id,
                 "customer" => [
-                    "email" => $request->input('email') !== null ? $request->input('email') : "john@example.com",
-                    "first_name" => $firstname,
-                    "last_name" => $lastname,
+                    "email" => $request->input('email') ?: "john@example.com",
+                    "first_name" => $request->input('first_name'),
+                    "last_name" => $request->input('last_name'),
                 ],
-                "return_url" => "https://dico.iamyourclounon.bj/thank-you",
+                "return_url" => "https://www.iamyourclounon.bj/",
                 "metadata" => [
                     "payment" => $payment->id,
                 ],
@@ -123,34 +120,40 @@ class PaymentController extends Controller
 
         $paymentId = ($isArray ? ($stateData['payment'] ?? null) : (json_decode($stateData)->payment) ?? null) ?? null;
 
+        if (!$paymentId) {
+            Log::emergency('not a correct payment If');
+
+            return response()->json([
+                'message' => 'EVENT NOT OK',
+            ], 400);
+        }
 
         Log::alert("PAYMENT ID: " . $paymentId);
 
         $transactionId = $data['data']["id"];
         $amount = $data['data']["amount"];
+        $payment = Payment::findOrFail($paymentId);
+        $isPending = $payment->status == PaymentStatusEnum::PENDING;
 
-        if (isset($paymentId)) {
-            $payment = Payment::findOrFail($paymentId);
-            $isPending = $payment->status == PaymentStatusEnum::PENDING;
+        if (isset($amount) && $amount == $payment->amount && $isPending) {
 
-            Log::info('Payment found <===> ' . $isPending);
+            Log::info('Payment found <===> Is Pending');
+            $payment->transactionId = $transactionId;
+            $payment->status = PaymentStatusEnum::CONFIRMED;
+            $payment->save();
+            Log::info('Payment confirmed');
 
-
-            if ($isPending) {
-                $payment->transactionId = $transactionId;
-                $payment->status = PaymentStatusEnum::CONFIRMED;
-                $payment->save();
-                Log::info('Payment confirmed');
-
-                return response()->json([
-                    'message' => 'OK',
-                ], 200);
-            } else {
-                return response()->json([
-                    'message' => 'NOT_OK',
-                ], 400);
+            $device = Installation::find($payment->deviceUuid);
+            if (!$device->hasSubscribed) {
+                $device->hasSubscribed = true;
+                $device->saveOrFail();
             }
+            return response()->json([
+                'message' => 'OK',
+            ]);
         }
+        Log::info('Payment found <===> probably not Pending');
+
 
         return response()->json([
             'message' => 'NOT_OK',
@@ -159,4 +162,27 @@ class PaymentController extends Controller
 
     }
 
+    public function index()
+    {
+        $payments = Payment::all();
+        return response()->json(PaymentResource::collection($payments));
+    }
+
+    public function clear()
+    {
+        $now = now(config('app.timezone'))->subHour()->format('Y-m-d H:i:s');
+
+        $payments = Payment::where('status', PaymentStatusEnum::PENDING)
+            ->where('created_at', '<', $now)->get();
+
+        foreach ($payments as $payment) {
+            $payment->deleteOrFail();
+        }
+
+        return response()->json([
+            'message' => 'OK',
+        ]);
+
+
+    }
 }

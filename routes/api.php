@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/permissions', [RoleController::class, 'getPermissions']);
         Route::post('/release', [ReleaseController::class, 'store']);
         Route::post('/import', [WordController::class, 'import']);
+        Route::get('/payments', [PaymentController::class, 'index']);
+        Route::get('/clear-payments', [PaymentController::class, 'clear']);
     });
     Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
