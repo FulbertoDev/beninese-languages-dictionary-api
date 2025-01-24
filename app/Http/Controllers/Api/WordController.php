@@ -92,13 +92,12 @@ class WordController extends Controller
         $content = file_get_contents($file);
         $json = json_decode($content, true);
 
-
         foreach ($json as $item) {
             $word = new Word();
             $word->inFrench = trim($item['inFrench']);
             $word->inFongbe = trim($item['inFongbe']);
             $word->inYoruba = (isset($item['inYoruba']) && $item['inYoruba'] != '') ? $item['inYoruba'] : null;
-            $word->isValidated = rand(0, 1) < 1;
+            $word->isValidated = true;
             $word->save();
             if ($item['expressions']) {
                 foreach ($item['expressions'] as $element) {

@@ -1,0 +1,42 @@
+name: Laravel Deployment
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    types:
+      - closed
+
+jobs:
+  app-deploy:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - uses: actions/checkout@v3
+      - name: 📌 Copy .env
+        run: php -r "file_exists('.env') || copy('.env.production', '.env');"
+      #- name: ⚙️ Install Dependencies
+      #  run: composer update --ignore-platform-reqs
+      #- name: 🧱 Generate key
+      #  run: php artisan key:generate
+      #- name: 🧱 Generate assets
+      #  run: npm install && npm run dev
+      #- name: 🔏 Directory Permissions
+      #  run: chmod -R 777 storage bootstrap/cache
+      #- name: 🔏 Directory Permissions
+      #  run: chmod -R 775 storage
+      #- name: 🖇️ Link storage
+      #  run: php artisan storage:link
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          #server: ${{ secrets.FTP_SERVER }}
+          #username: ${{ secrets.FTP_USERNAME }}
+          #password: ${{ secrets.FTP_PASSWORD }}
+          server: ftp.leolagrangebj.com
+          username: gitlab-deploy@dico.iamyourclounon.bj
+          password: gitlab-deploy
