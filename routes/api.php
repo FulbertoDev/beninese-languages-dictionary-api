@@ -3,6 +3,7 @@
 use App\Helpers\RolesEnum;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InstallationController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReleaseController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SuggestionController;
@@ -24,7 +25,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/release', [ReleaseController::class, 'store']);
         Route::post('/import', [WordController::class, 'import']);
     });
-
     Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
 });
@@ -38,3 +38,7 @@ Route::get('/words/update', [WordController::class, 'fetchUpdate']);
 Route::get('/release', [ReleaseController::class, 'getReleases']);
 Route::post('/suggestions', [SuggestionController::class, 'store']);
 Route::get('/suggestions/{id}', [SuggestionController::class, 'getSuggestionByDevice']);
+
+
+Route::post('/create-payment', [PaymentController::class, 'store']);
+Route::post('/confirm-payment', [PaymentController::class, 'confirmMoneroo']);
