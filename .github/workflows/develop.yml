@@ -21,8 +21,8 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.production', '.env');"
       - name: ⚙️ Install Dependencies
         run: composer update --ignore-platform-reqs
-      - name: 🧱 Generate key
-        run: php artisan key:generate
+      #- name: 🧱 Generate key
+      #  run: php artisan key:generate
       - name: 🧱 Generate assets
         run: npm install && npm run dev
       - name: 🔏 Directory Permissions
