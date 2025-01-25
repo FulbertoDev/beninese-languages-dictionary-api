@@ -113,7 +113,6 @@ class WordController extends Controller
             $audio = new Audio();
             $audio->word_id = $word->id;
             $audio->save();
-
         }
 
         $words = Word::whereIsvalidated(true)->pluck('id');
@@ -129,9 +128,12 @@ class WordController extends Controller
             ]
         ]);
 
+        $free = Word::take(100)->get();
+
         return response()->json([
             "success" => 'OK',
-            "message" => $count . ' mots importés avec succès'
+            "message" => $count . ' mots importés avec succès',
+            "initialWords" => WordResource::collection($free),
         ]);
     }
 }
