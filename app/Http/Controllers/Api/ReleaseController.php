@@ -63,7 +63,7 @@ class ReleaseController extends Controller
 
         Artisan::call('app:update-word-status', ['words' => $release->details['content']]);
 
-        if ($request->user()->hasAnyRole(array(RolesEnum::ADMIN_ROLE, RolesEnum::HELPER_ROLE))) {
+        if ($request->user() != null && $request->user()->hasAnyRole(array(RolesEnum::ADMIN_ROLE, RolesEnum::HELPER_ROLE))) {
             return response()->json(ReleaseResource::make($release));
         } else {
             return response()->json(ReducedReleaseResource::make($release));
@@ -76,7 +76,7 @@ class ReleaseController extends Controller
     public function getReleases(Request $request)
     {
         $releases = Release::latest('versionCode')->get();
-        if ($request->user()->hasAnyRole(array(RolesEnum::ADMIN_ROLE, RolesEnum::HELPER_ROLE))) {
+        if ($request->user() != null && $request->user()->hasAnyRole(array(RolesEnum::ADMIN_ROLE, RolesEnum::HELPER_ROLE))) {
             return response()->json(ReleaseResource::collection($releases));
         } else {
             return response()->json(ReducedReleaseResource::collection($releases));
