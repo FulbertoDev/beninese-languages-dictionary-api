@@ -15,16 +15,17 @@ class SuggestionController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'email' => 'required|email',
+            'name' => 'string',
+            'email' => 'email',
             'contact' => 'required|string',
             'deviceUuid' => 'required|string',
+            'wordId' => 'string|nullable',
             'data.inFrench' => 'required',
             'data.expressions' => 'array',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(),400);
         }
 
 
@@ -32,7 +33,9 @@ class SuggestionController extends Controller
         $suggestion->name = $request->input('name');
         $suggestion->email = $request->input('email');
         $suggestion->contact = $request->input('contact');
-        $suggestion->word_id = $request->input('wordId');
+        if($request->has('wordId')){
+            $suggestion->word_id = $request->input('wordId');
+        }
         $suggestion->deviceUuid = $request->input('deviceUuid');
         $suggestion->data = json_encode($request->input('data'));
         $suggestion->saveOrFail();
