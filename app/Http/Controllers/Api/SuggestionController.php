@@ -15,8 +15,8 @@ class SuggestionController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'nullable|string',
-            'email' => 'nullable|email',
+            'name' => 'required|string',
+            'email' => 'required|email',
             'contact' => 'required|string',
             'deviceUuid' => 'required|string',
             'wordId' => 'string|nullable',
