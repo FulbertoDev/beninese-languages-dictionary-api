@@ -19,6 +19,7 @@ class SuggestionResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             "contact" => $this->contact,
+            "status" => $this->status,
             "data" => json_decode($this->data),
             "word" => WordResource::make($this->word),
         ];

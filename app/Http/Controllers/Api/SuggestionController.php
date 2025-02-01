@@ -52,7 +52,7 @@ class SuggestionController extends Controller
 
     }
 
-    public function getSuggestionByDevice(Request $request, string $id)
+    public function getSuggestionByDevice(string $id)
     {
         $suggestions = Suggestion::whereDeviceuuid($id)->get();
         return response()->json(SuggestionResource::collection($suggestions));
