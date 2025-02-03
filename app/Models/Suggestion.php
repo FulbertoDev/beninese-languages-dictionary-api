@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\SuggestionStatusEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,13 @@ class Suggestion extends Model
         'contact',
         'data',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'status' => SuggestionStatusEnum::class
+        ];
+    }
 
     /**
      * @return BelongsTo
