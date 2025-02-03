@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/role/{id}/permissions', [RoleController::class, 'setPermissions']);
         Route::get('/permissions', [RoleController::class, 'getPermissions']);
         Route::post('/release', [ReleaseController::class, 'store']);
-        Route::post('/import', [WordController::class, 'import']);
+        Route::get('/setup-db', [WordController::class, 'import']);
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/clear-payments', [PaymentController::class, 'clear']);
     });
@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/users/installation', [InstallationController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/words', [WordController::class, 'fetch']);
-Route::get('/words/init', [WordController::class, 'init']);
 Route::get('/words/update', [WordController::class, 'fetchUpdate']);
 Route::get('/release', [ReleaseController::class, 'getReleases']);
 Route::post('/suggestions', [SuggestionController::class, 'store']);

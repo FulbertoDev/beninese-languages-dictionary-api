@@ -9,6 +9,7 @@ use App\Models\Expression;
 use App\Models\Release;
 use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class WordController extends Controller
@@ -32,11 +33,6 @@ class WordController extends Controller
         );
     }
 
-    public function init()
-    {
-        $words = Word::whereIsvalidated(true)->take(100)->get();
-        return response()->json(WordResource::collection($words));
-    }
 
     public function fetchUpdate(Request $request)
     {
@@ -81,16 +77,8 @@ class WordController extends Controller
 
     public function import(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'file' => 'required|file'
-        ]);
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
-        $file = request()->file('file');
-        $content = file_get_contents($file);
-        $json = json_decode($content, true);
+        $file = Storage::disk('local')->get('json/words.json');
+        $json = json_decode($file, true);
 
         foreach ($json as $item) {
             $word = new Word();
