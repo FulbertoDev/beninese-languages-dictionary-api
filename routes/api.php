@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\InstallationController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReleaseController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\SuggestionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WordController;
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/setup-db', [WordController::class, 'import']);
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/clear-payments', [PaymentController::class, 'clear']);
+        Route::get('/stats', [StatsController::class, 'index']);
     });
     Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);

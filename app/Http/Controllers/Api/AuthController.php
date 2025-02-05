@@ -31,21 +31,14 @@ class AuthController extends Controller
 
         $user = User::where("email", $request->email)->firstOrFail();
 
-        if(!$user->isActive){
+        if (!$user->isActive) {
             return response()->json([
                 'message' => 'Account not active'
-            ], 401);
+            ], 403);
         }
 
 
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        if(!$user->isActive){
-            return response()->json([
-                'message' => 'Account not active'
-            ], 401);
-        }
+        $token = $user->createToken('auth-token-' . $user->id)->plainTextToken;
 
         return response()->json([
             'token' => $token,
