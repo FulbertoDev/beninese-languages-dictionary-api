@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class WordController extends Controller
 {
+
+    /**
+     * @unauthenticated
+     */
     public function fetch()
     {
         $releaseCount = Release::all()->pluck('id')->count();

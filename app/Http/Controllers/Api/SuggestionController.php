@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Validator;
 class SuggestionController extends Controller
 {
 
+    /**
+     * @unauthenticated
+     */
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'email' => 'required|email',
@@ -52,6 +54,9 @@ class SuggestionController extends Controller
 
     }
 
+    /**
+     * @unauthenticated
+     */
     public function getSuggestionByDevice(string $id)
     {
         $suggestions = Suggestion::whereDeviceuuid($id)->get();

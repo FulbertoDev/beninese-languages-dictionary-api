@@ -52,6 +52,9 @@ class ReleaseController extends Controller
     }
 
 
+    /**
+     * @unauthenticated
+     */
     public function getReleases(Request $request)
     {
         $releases = Release::latest('versionCode')->get();

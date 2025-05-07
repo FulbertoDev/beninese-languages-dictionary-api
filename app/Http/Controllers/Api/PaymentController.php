@@ -17,6 +17,9 @@ use Illuminate\Validation\Rule;
 
 class PaymentController extends Controller
 {
+    /**
+     * @unauthenticated
+     */
     public function store(Request $request)
     {
 
@@ -83,6 +86,9 @@ class PaymentController extends Controller
 
     }
 
+    /**
+     * @unauthenticated
+     */
     public function confirmMoneroo(Request $request)
     {
         $data = $request->all();

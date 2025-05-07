@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Validator;
 
 class InstallationController extends Controller
 {
+
+    /**
+     * @unauthenticated
+     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -60,7 +60,7 @@ return [
         /*
          * URL to an image that displays as a small square logo next to the title, above the table of contents.
          */
-        'logo' => '',
+        'logo' => 'https://i0.wp.com/iamyourclounon.bj/wp-content/uploads/2023/02/logo_new%402x-600x240-1.png?fit=600%2C240&ssl=1',
 
         /*
          * Use to fetch the credential policy for the Try It feature. Options are: omit, include (default), and same-origin
