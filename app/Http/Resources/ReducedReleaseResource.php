@@ -17,7 +17,7 @@ class ReducedReleaseResource extends JsonResource
         return [
             "versionCode" => $this->versionCode,
             "versionName" => $this->versionName,
-            "count" => $this->details["count"]
+            "description" => $this->description
         ];
 
     }

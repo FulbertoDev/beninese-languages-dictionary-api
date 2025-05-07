@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\PaymentReasonEnum;
 use App\Helpers\PaymentStatusEnum;
 use App\Helpers\SuggestionStatusEnum;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,8 @@ class StatsController extends Controller
         $validatedWordsCount = Word::whereIsvalidated(true)->count();
 
         //Payments
-        $payments = Payment::whereStatus(PaymentStatusEnum::CONFIRMED)->sum('amount');
+        $payments = Payment::whereStatus(PaymentStatusEnum::CONFIRMED)->whereReason(PaymentReasonEnum::SUBSCRIPTION)->sum('amount');
+        $gifts = Payment::whereStatus(PaymentStatusEnum::CONFIRMED)->whereReason(PaymentReasonEnum::GIFT)->sum('amount');
 
 
         //Suggestions
@@ -34,7 +36,8 @@ class StatsController extends Controller
                 "pending" => $pendingSuggestionsCount,
                 "rejected" => $rejectedSuggestionsCount,
             ],
-            "payments" => $payments,
+            "payments" => (int)$payments,
+            "gifts" => (int)$gifts,
         ]);
     }
 }

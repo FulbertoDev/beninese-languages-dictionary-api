@@ -14,12 +14,13 @@ class Release extends Model
     protected $fillable = [
         'versionCode',
         'versionName',
-        'details',
+        'description',
     ];
 
 
     protected $casts = [
-        'details' => 'json',
+        'description' => 'string',
+        'versionName' => 'string',
         'versionCode' => 'integer'
     ];
 

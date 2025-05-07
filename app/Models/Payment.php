@@ -20,6 +20,7 @@ class Payment extends Model
         'status',
         'transactionId',
         'deviceUuid',
+        'reason',
     ];
 
     protected $casts = [
