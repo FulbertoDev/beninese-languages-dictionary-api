@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\PaymentReasonEnum;
 use App\Helpers\PaymentStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -19,6 +20,7 @@ return new class extends Migration {
             $table->string('transactionId')->nullable();
             $table->string('deviceUuid')->nullable(false);
             $table->integer('amount')->nullable(false);
+            $table->enum('reason', array_column(PaymentReasonEnum::cases(), 'value'))->nullable(false);
             $table->enum('status', array_column(PaymentStatusEnum::cases(), 'value'))->default(PaymentStatusEnum::PENDING);
             $table->timestamps();
             $table->foreign('deviceUuid')->references('id')->on('installations');

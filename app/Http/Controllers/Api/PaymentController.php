@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helpers\MonerooHelpers;
+use App\Helpers\PaymentReasonEnum;
 use App\Helpers\PaymentStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class PaymentController extends Controller
 {
@@ -26,6 +28,7 @@ class PaymentController extends Controller
                 'last_name' => 'required|string',
                 'contact' => 'required|string',
                 'email' => 'email',
+                'reason' => ['required', Rule::enum(PaymentReasonEnum::class)],
             ]);
 
             if ($validator->fails()) {
@@ -39,10 +42,10 @@ class PaymentController extends Controller
             $payment->amount = $request->input('amount');
             $payment->deviceUuid = $request->input('deviceUuid');
             $payment->contact = $request->input('contact');
+            $payment->reason = $request->input('reason');
             $payment->saveOrFail();
 
-            //TODO::Replace sandbox key by live key
-            $headers = array("Authorization" => "Bearer " . env('MONEROO_SECRET_SANDBOX_KEY'));
+            $headers = array("Authorization" => "Bearer " . env('MONEROO_SECRET_LIVE_KEY'));
 
 
             $data = [

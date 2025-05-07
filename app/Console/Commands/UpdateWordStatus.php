@@ -29,7 +29,6 @@ class UpdateWordStatus extends Command
     {
 
         $ids = explode(";", $this->argument('words'));
-        Log::info("IDS: " . json_encode($ids));
         foreach ($ids as $item) {
             $word = Word::find($item);
             if (!$word->isValidated) {

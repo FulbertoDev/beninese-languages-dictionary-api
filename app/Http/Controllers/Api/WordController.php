@@ -10,7 +10,6 @@ use App\Models\Release;
 use App\Models\Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class WordController extends Controller
 {
@@ -28,39 +27,6 @@ class WordController extends Controller
             [
                 "count" => $count,
                 "version" => $latestRelease->versionCode,
-                "data" => WordResource::collection($words),
-            ]
-        );
-    }
-
-
-    public function fetchUpdate(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'from' => 'required|integer|min:1',
-            'to' => 'required|integer'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-        $fromVersion = $request->integer('from');
-        $toVersion = $request->integer('to');
-
-        $fromRelease = Release::firstWhere('versionCode', '=', $fromVersion);
-        $toRelease = Release::firstWhere('versionCode', '=', $toVersion);
-
-        $oldIds = explode(";", $fromRelease->details['content']);
-        $newIds = explode(";", $toRelease->details['content']);
-
-        $diff = array_diff($newIds, $oldIds);
-
-        $words = Word::whereIn("id", $diff)->get();
-
-        return response()->json(
-            [
-                "count" => count($diff),
-                "version" => $toVersion,
                 "data" => WordResource::collection($words),
             ]
         );
@@ -110,10 +76,7 @@ class WordController extends Controller
         Release::create([
             "versionCode" => 1,
             "versionName" => '1.0',
-            "details" => [
-                "count" => $count,
-                "content" => $words->join(";"),
-            ]
+            "description" => 'Déploiement Initial'
         ]);
 
         $free = Word::take(100)->get();
@@ -123,5 +86,27 @@ class WordController extends Controller
             "message" => $count . ' mots importés avec succès',
             "initialWords" => WordResource::collection($free),
         ]);
+    }
+
+
+    public function getWords(Request $request)
+    {
+
+        $perPage = $request->query('per_page', 10);
+        $searchInFrench = $request->query('searchInFrench');
+        $searchInFongbe = $request->query('searchInFongbe');
+
+        $words = Word::orderBy('inFrench')
+            ->whereIsvalidated(true)
+            ->when($searchInFongbe, function ($query, $search) {
+                return $query->where('inFongbe', 'like', "%{$search}%");
+            })
+            ->when($searchInFrench, function ($query, $search) {
+                return $query->where('inFrench', 'like', "%{$search}%");
+            })
+            ->paginate($perPage);
+
+        return WordResource::collection($words);
+
     }
 }

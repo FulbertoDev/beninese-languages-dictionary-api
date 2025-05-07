@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->ulid('id')->primary();
             $table->integer('versionCode')->unique();
             $table->string('versionName')->unique();
-            $table->json('details');
+            $table->string('description')->unique();
             $table->timestamps();
         });
     }

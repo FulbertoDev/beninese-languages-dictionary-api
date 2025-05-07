@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/clear-payments', [PaymentController::class, 'clear']);
         Route::get('/stats', [StatsController::class, 'index']);
+        Route::get('/get-words', [WordController::class, 'getWords']);
     });
     Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
@@ -37,7 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/users/installation', [InstallationController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/words', [WordController::class, 'fetch']);
-Route::get('/words/update', [WordController::class, 'fetchUpdate']);
 Route::get('/release', [ReleaseController::class, 'getReleases']);
 Route::post('/suggestions', [SuggestionController::class, 'store']);
 Route::get('/suggestions/{id}', [SuggestionController::class, 'getSuggestionByDevice']);
