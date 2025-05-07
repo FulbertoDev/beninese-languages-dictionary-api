@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use Dedoc\Scramble\Scramble;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Gate;
@@ -26,10 +26,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         JsonResource::withoutWrapping();
-        Scramble::configure()
-            ->routes(function (Route $route) {
-                return Str::startsWith($route->uri, 'api/');
-            });
+        Scramble::configure()->routes(function (Route $route) {
+            return Str::startsWith($route->uri, 'api/');
+        });
         Gate::define('viewApiDocs', function (User $user) {
             return true;
         });
