@@ -25,9 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('viewApiDocs', function (User $user) {
-            return true;
-        });
+
         JsonResource::withoutWrapping();
         Scramble::configure()->routes(function (Route $route) {
             return Str::startsWith($route->uri, 'api/');
