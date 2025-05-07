@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         JsonResource::withoutWrapping();
+        Scramble::ignoreDefaultRoutes();
         Scramble::configure()
             ->routes(function (Route $route) {
                 return Str::startsWith($route->uri, 'api/');
