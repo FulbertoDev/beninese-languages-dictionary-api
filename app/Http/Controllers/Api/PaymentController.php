@@ -38,6 +38,8 @@ class PaymentController extends Controller
                 return response()->json($validator->errors());
             }
 
+            $faker = \Faker\Factory::create();
+
 
             $payment = new Payment();
             $payment->last_name = $request->input('last_name');
@@ -54,17 +56,17 @@ class PaymentController extends Controller
             $data = [
                 "amount" => $payment->amount,
                 "currency" => MonerooHelpers::currency,
-                "description" => "Paiement #" . $payment->id,
+                "description" => $request->input('reason') ?: "Paiement #" . $payment->id,
                 "customer" => [
-                    "email" => $request->input('email') ?: "john@example.com",
+                    "email" => $request->input('email') ?: $faker->email(),
                     "first_name" => $request->input('first_name'),
                     "last_name" => $request->input('last_name'),
+                    "phone" => $request->input('contact'),
                 ],
                 "return_url" => "https://www.iamyourclounon.bj/",
                 "metadata" => [
                     "payment" => $payment->id,
                 ],
-                //"methods"=> ["mtn_bj", "moov_bj"] # Once again, it is not required
             ];
 
 
