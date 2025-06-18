@@ -41,8 +41,6 @@ class ReleaseController extends Controller
             "description" => $request->get('description'),
         ]);
 
-        //Artisan::call('app:update-word-status', ['words' => $release->details['content']]);
-
         if ($request->user() != null && $request->user()->hasAnyRole(array(RolesEnum::ADMIN_ROLE, RolesEnum::HELPER_ROLE))) {
             return response()->json(ReleaseResource::make($release));
         } else {

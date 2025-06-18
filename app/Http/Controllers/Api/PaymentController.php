@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PaymentResource;
 use App\Models\Installation;
 use App\Models\Payment;
+use Faker\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -38,8 +39,9 @@ class PaymentController extends Controller
                 return response()->json($validator->errors());
             }
 
-            $faker = \Faker\Factory::create();
 
+
+            $faker = Factory::create();
 
             $payment = new Payment();
             $payment->last_name = $request->input('last_name');
@@ -49,6 +51,10 @@ class PaymentController extends Controller
             $payment->contact = $request->input('contact');
             $payment->reason = $request->input('reason');
             $payment->saveOrFail();
+
+
+            Log::critical('$payment save passed');
+
 
             $headers = array("Authorization" => "Bearer " . env('MONEROO_SECRET_LIVE_KEY'));
 
@@ -61,13 +67,16 @@ class PaymentController extends Controller
                     "email" => $request->input('email') ?: $faker->email(),
                     "first_name" => $request->input('first_name'),
                     "last_name" => $request->input('last_name'),
-                    "phone" => $request->input('contact'),
+                    "phone" => (int)$request->input('contact'),
                 ],
-                "return_url" => "https://www.iamyourclounon.bj/",
+                "return_url" => $request->input('return_url') ?? "https://www.iamyourclounon.bj/",
                 "metadata" => [
                     "payment" => $payment->id,
                 ],
             ];
+
+            Log::critical('Payloaf to send '.json_encode($data));
+
 
 
             $response = Http::withHeaders($headers)->post(env('MONEROO_BASE_URL') . MonerooHelpers::paymentInitUrl, $data);
@@ -78,6 +87,10 @@ class PaymentController extends Controller
                 $url = $data["checkout_url"];
                 return response()->json(["paymentUrl" => $url]);
             }
+
+            Log::critical('JSON', (array)json_encode($response->json()));
+            Log::critical('Moneroo request failed', (array)json_encode($response));
+
 
             return response()->json(json_encode($response), $response->status());
 
@@ -125,6 +138,25 @@ class PaymentController extends Controller
             ], 400);
         }
 
+        //Check the status
+        $headers = array("Authorization" => "Bearer " . env('MONEROO_SECRET_LIVE_KEY'));
+        $id = $data['data']['id'];
+        $verificationResponse = Http::withHeaders($headers)->get(str_replace("{paymentId}",$id,env('MONEROO_BASE_URL') . MonerooHelpers::paymentVerificationUrl));
+
+        $jsonData = $verificationResponse->json();
+
+        $status = $jsonData['data']['status'];
+
+        $isPaymentSuccessConfirmed = $status == "success";
+
+        if (!$isPaymentSuccessConfirmed) {
+            Log::emergency('Not a successful payment after confirmation');
+
+            return response()->json([
+                'message' => 'EVENT NOT OK',
+            ], 400);
+        }
+
         $stateData = $data['data']['metadata'];
 
         $isArray = gettype($stateData) == "array";
@@ -154,7 +186,7 @@ class PaymentController extends Controller
             $payment->save();
             Log::info('Payment confirmed');
 
-            $device = Installation::find($payment->deviceUuid);
+            $device = Installation::findOrFail($payment->deviceUuid);
             if (!$device->hasSubscribed) {
                 $device->hasSubscribed = true;
                 $device->saveOrFail();

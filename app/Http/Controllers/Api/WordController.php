@@ -92,7 +92,6 @@ class WordController extends Controller
         ]);
     }
 
-
     public function getWords(Request $request)
     {
 
