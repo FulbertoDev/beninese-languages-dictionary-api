@@ -32,4 +32,12 @@ class InstallationController extends Controller
         ]);
     }
 
+    public function checkDeviceSubscription(string $id)
+    {
+        $installation = Installation::findOrFail($id);
+        return response()->json([
+            "deviceUuid" => $installation->id,
+            "hasSubscribed"=> (bool) $installation->hasSubscribed,
+        ]);
+    }
 }

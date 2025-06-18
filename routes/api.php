@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\SuggestionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WordController;
-use App\Http\Middleware\CorsMiddleware;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 Route::post('/users/installation', [InstallationController::class, 'store']);
+Route::get('/users/checkDeviceSubscription/{id}', [InstallationController::class, 'checkDeviceSubscription']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/words', [WordController::class, 'fetch']);
 Route::get('/release', [ReleaseController::class, 'getReleases']);
