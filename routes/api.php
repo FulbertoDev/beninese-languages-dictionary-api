@@ -10,11 +10,12 @@ use App\Http\Controllers\Api\StatsController;
 use App\Http\Controllers\Api\SuggestionController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WordController;
+use App\Http\Middleware\CorsMiddleware;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::group(['middleware' => ['role:' . RolesEnum::ADMIN_ROLE->value,]], function () {
+    Route::group(['middleware' => ['role:' . RolesEnum::ADMIN_ROLE->value, 'cors',]], function () {
         Route::get('/users', [UserController::class, 'getUsers']);
         Route::get('/user', [UserController::class, 'getUser']);
         Route::post('/create-user', [UserController::class, 'create']);
@@ -43,5 +44,5 @@ Route::post('/suggestions', [SuggestionController::class, 'store']);
 Route::get('/suggestions/{id}', [SuggestionController::class, 'getSuggestionByDevice']);
 
 
-Route::post('/create-payment', [PaymentController::class, 'store']);
+Route::post('/create-payment', [PaymentController::class, 'store'])->middleware('cors');
 Route::post('/confirm-payment', [PaymentController::class, 'confirmMoneroo']);
