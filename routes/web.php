@@ -14,3 +14,5 @@ Route::redirect('/', '/support?token=' . $encrypted);
 
 
 Route::get('/support', [SupportController::class, 'index']);
+Route::get('/support/thanks', [SupportController::class, 'thanks'])->name('support.thanks');
+

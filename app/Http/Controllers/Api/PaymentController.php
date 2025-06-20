@@ -78,7 +78,6 @@ class PaymentController extends Controller
             Log::critical('Payloaf to send '.json_encode($data));
 
 
-
             $response = Http::withHeaders($headers)->post(env('MONEROO_BASE_URL') . MonerooHelpers::paymentInitUrl, $data);
 
             if ($response->status() == 201) {
