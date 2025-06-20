@@ -4,7 +4,7 @@
         <span class="text-base text-gray-900 dark:text-white uppercase font-semibold text-center mb-4">
             Soutenez votre dictionnaire préféré
         </span>
-        <form wire:submit="generatePaymentLink">
+        <form wire:submit="generatePaymentLink" class="mb-8">
             <div class="flex flex-col space-y-3 my-4">
                 <div class="grid gap-6 mb-6 grid-cols-1 md:w-2/3 md:mx-auto">
                     <div>
@@ -47,14 +47,14 @@
                 </div>
 
                 @if($this->reason!=='gift')
-                    <span class=" md:w-2/3 md:mx-auto text-justify text-gray-900 dark:text-white text-sm my-2">
+                    <span class=" md:w-2/3 md:mx-auto text-justify text-gray-900 dark:text-white text-sm">
                     En soutenant votre dictionnaire, vous débloquez par la même occasion l'accès à tous les mots
                     actuellement disponibles.
                 </span>
                 @endif
 
                 <button type="submit"
-                        class="md:w-2/3 md:mx-auto disabled:opacity-50 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full  sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-6">
+                        class="md:w-2/3 md:mx-auto disabled:opacity-50 disabled:cursor-not-allowed text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full  sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-2 mb-12">
                     <span wire:loading.class="hidden">Continuer</span>
                     <span wire:loading>
                         <svg aria-hidden="true"
