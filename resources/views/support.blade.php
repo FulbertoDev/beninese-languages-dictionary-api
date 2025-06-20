@@ -23,7 +23,7 @@
 
 </head>
 <body class="font-sans antialiased h-screen w-screen bg-white dark:bg-gray-800">
-<div class="md:w-1/2 mx-auto overflow-y-scroll h-full p-8">
+<div class="md:w-1/2 mx-auto overflow-y-auto h-full p-8">
     @isset($decrypted)
         <livewire:payment-form :data="$decrypted"/>
     @else

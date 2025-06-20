@@ -36,6 +36,5 @@ class AppServiceProvider extends ServiceProvider
             ->routes(function (Route $route) {
                 return Str::startsWith($route->uri, 'api/');
             });
-
     }
 }
