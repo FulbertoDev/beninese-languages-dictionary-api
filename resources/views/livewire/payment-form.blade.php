@@ -5,7 +5,7 @@
             Soutenez votre dictionnaire préféré
         </span>
         <form wire:submit="generatePaymentLink">
-            <div class="flex flex-col space-y-6 my-6">
+            <div class="flex flex-col space-y-3 my-4">
                 <div class="grid gap-6 mb-6 grid-cols-1 md:w-2/3 md:mx-auto">
                     <div>
                         <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nom
