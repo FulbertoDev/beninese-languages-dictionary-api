@@ -5,7 +5,7 @@
             Soutenez votre dictionnaire préféré
         </span>
 
-        @if($deviceUuidFound)
+        @if($deviceUuidFound || $deviceStepPassed)
             <form wire:submit="generatePaymentLink" class="mb-8 w-full">
                 <div class="flex flex-col space-y-3 my-4">
                     <div class="grid gap-6 mb-6 grid-cols-1 md:w-2/3 w-full md:mx-auto">
@@ -43,13 +43,16 @@
                             <input wire:model="amount" type="number" id="amount" min="{{$minAmount}}"
                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                    required/>
-                            <span id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Montant minimum: {{$minAmount}} F.CFA {{$minAmount==995 ? '≈ 1,5€':''}}
-                        </span>
+                            @if(!$deviceStepPassed)
+                                <span id="helper-text-explanation"
+                                      class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    Montant minimum: {{$minAmount}} F.CFA {{$minAmount==995 ? '≈ 1,5€':''}}
+                                </span>
+                            @endif
                         </div>
                     </div>
 
-                    @if($this->reason!=='gift')
+                    @if($this->reason!=='gift' && !$deviceStepPassed)
                         <span class=" md:w-2/3 md:mx-auto text-justify text-gray-900 dark:text-white text-sm">
                     En soutenant votre dictionnaire, vous débloquez par la même occasion l'accès à tous les mots
                     actuellement disponibles.
@@ -101,7 +104,8 @@
                         </svg>
                     </span>
                     </button>
-                    <span class="text-blue-600 underline hover:cursor-pointer text-center">Passer</span>
+                    <span wire:click="skipStep"
+                          class="text-blue-600 underline hover:cursor-pointer text-center">Passer</span>
                 </div>
             </div>
         @endif

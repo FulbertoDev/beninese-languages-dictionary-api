@@ -24,6 +24,7 @@ class PaymentForm extends Component
     public $minAmount;
 
     public $deviceUuidFound = false;
+    public $deviceStepPassed = false;
 
     public function mount()
     {
@@ -104,6 +105,11 @@ class PaymentForm extends Component
             Toaster::error('Une erreur est survenue lors de la génération du lien de paiement.');
         }
 
+    }
+
+    public function skipStep():void
+    {
+        $this->deviceStepPassed = true;
     }
 
 
