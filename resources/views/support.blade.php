@@ -24,16 +24,7 @@
 </head>
 <body class="font-sans antialiased h-screen w-screen bg-white dark:bg-gray-800">
 <div class="md:w-1/2 mx-auto overflow-y-auto h-full p-8">
-    @isset($decrypted)
-        <livewire:payment-form :data="$decrypted"/>
-    @else
-        <div class="flex items-center justify-center h-full flex-col space-y-4">
-            <img class="h-16" src="{{\Illuminate\Support\Facades\URL::asset('images/logo.png')}}" alt="">
-            <p class="text-center text-gray-900 dark:text-white text-base font-medium">
-                Veuillez ouvrir votre application, et commencer le processus sur la page de soutien.
-            </p>
-        </div>
-    @endif
+    <livewire:payment-form/>
 </div>
 <x-toaster-hub/>
 

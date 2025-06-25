@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Helpers\MonerooHelpers;
+use App\Models\Installation;
 use App\Models\Payment;
 use Faker\Factory;
 use Illuminate\Support\Facades\Http;
@@ -18,15 +19,15 @@ class PaymentForm extends Component
     public $firstName;
     public $phone;
     public $deviceUuid;
-
     public $amount;
-
     public $reason;
     public $minAmount;
 
+    public $deviceUuidFound = false;
 
-    public function mount($data)
+    public function mount()
     {
+        /*
         $this->lastName = $data['last_name'];
         $this->firstName = $data['first_name'];
         $this->phone = $data['contact'];
@@ -38,6 +39,7 @@ class PaymentForm extends Component
         } else {
             $this->minAmount = 995;
         }
+        */
     }
 
     #[Computed]
@@ -51,9 +53,8 @@ class PaymentForm extends Component
             isset($this->phone) && $this->amount >= $this->minAmount;
     }
 
-    public function generatePaymentLink()
+    public function generatePaymentLink(): void
     {
-
         try {
             $payment = new Payment();
             $payment->last_name = $this->lastName;
@@ -103,6 +104,31 @@ class PaymentForm extends Component
             Toaster::error('Une erreur est survenue lors de la génération du lien de paiement.');
         }
 
+    }
+
+
+    public function verifyDevice(): void
+    {
+        if (!isset($this->deviceUuid)) {
+            Toaster::error('Veuillez entrer l\'identifiant d\'installation');
+            return;
+        }
+
+        $device = Installation::findOrFail($this->deviceUuid);
+        if ($device) {
+            $this->deviceUuidFound = true;
+            $this->minAmount = $device->hasSubscribed ? 100 : 995;
+            $this->reason = $device->hasSubscribed ? 'gift' : 'subscription';
+            if (!$device->hasSubscribed) {
+                $this->amount = 995;
+            }
+
+        } else {
+            $this->deviceUuidFound = false;
+
+            Toaster::error('Cet identifiant n\'existe pas.');
+
+        }
     }
 
     public function render()

@@ -10,12 +10,7 @@ class SupportController extends Controller
 {
     public function index(Request $request)
     {
-        $token = $request->input('token');
-        if (!isset($token)) {
-            return view('support');
-        }
-        $decrypted = DecryptionHelper::decryptUrlData($token);
-        return view('support', compact('decrypted'));
+        return view('support');
 
     }
 
