@@ -2,29 +2,33 @@
     <div class="flex flex-col items-center">
         <img class="h-16" src="{{asset('images/logo.png')}}" alt="">
         <span class="text-base text-gray-900  uppercase font-semibold text-center mb-4">
-            Soutenez votre dictionnaire préféré
+            Soutenez votre<br>dictionnaire préféré
         </span>
 
         @if($deviceUuidFound || $deviceStepPassed)
             <form wire:submit="generatePaymentLink" class="mb-8 w-full">
                 <div class="flex flex-col space-y-3 my-4">
                     <div class="grid gap-6 mb-6 grid-cols-1 md:w-2/3 w-full md:mx-auto">
-                        <div>
-                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 ">Nom
-                            </label>
-                            <input wire:model="lastName" type="text" id="last_name"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="Doe" required/>
+                        <div class="flex space-x-3">
+                            <div>
+                                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 ">Nom
+                                </label>
+                                <input wire:model="lastName" type="text" id="last_name"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="JESUVIVI" required/>
+                            </div>
+                            <div>
+                                <label for="first_name"
+                                       class="block mb-2 text-sm font-medium text-gray-900 ">
+                                    Prénom(s)
+                                </label>
+                                <input wire:model="firstName" type="text" id="first_name"
+                                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                       placeholder="Mahugnon"
+                                       required/>
+                            </div>
                         </div>
-                        <div>
-                            <label for="first_name"
-                                   class="block mb-2 text-sm font-medium text-gray-900 ">
-                                Prénom(s)
-                            </label>
-                            <input wire:model="firstName" type="text" id="first_name"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                   placeholder="Doe" required/>
-                        </div>
+
                         <div>
                             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 ">
                                 Numéro de téléphone
@@ -55,8 +59,7 @@
 
                     @if($this->reason!=='gift' && !$deviceStepPassed)
                         <span class="text-justify text-blue-500 font-medium text-sm py-3">
-                    En soutenant votre dictionnaire, vous débloquez par la même occasion l'accès à tous les mots
-                    actuellement disponibles.
+                            En soutenant votre dictionnaire, vous débloquez par la même occasion l'accès à tous les mots actuellement disponibles.
                         </span>
                     @endif
 
@@ -79,10 +82,10 @@
                 </div>
             </form>
         @else
-            <div class="w-3/4">
+            <div class="w-full">
                 <div class="flex flex-col space-y-3 my-4">
-                    <div>
-                        <label for="device_uuid" class="block mb-2 text-sm font-medium text-gray-900 ">
+                    <div class="">
+                        <label for="device_uuid" class="flex justify-center mb-2 text-sm font-medium text-gray-900 ">
                             Identifiant d'installation
                         </label>
                         <input wire:model="deviceUuid" type="text" id="device_uuid"
