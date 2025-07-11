@@ -1,13 +1,67 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-6IuHIyn3.css",
+    "file": "assets/app-CQQtGHFX.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/icons.css": {
+    "file": "assets/icons-C-zDp6mn.css",
+    "src": "resources/css/icons.css",
+    "isEntry": true
+  },
+  "resources/css/tailwind.css": {
+    "file": "assets/tailwind-ChPbseNF.css",
+    "src": "resources/css/tailwind.css",
+    "isEntry": true
+  },
+  "resources/fonts/Pe-icon-7-stroke.eot": {
+    "file": "assets/Pe-icon-7-stroke-iUWukZXW.eot",
+    "src": "resources/fonts/Pe-icon-7-stroke.eot"
+  },
+  "resources/fonts/Pe-icon-7-stroke.svg": {
+    "file": "assets/Pe-icon-7-stroke-B0ODSzhW.svg",
+    "src": "resources/fonts/Pe-icon-7-stroke.svg"
+  },
+  "resources/fonts/Pe-icon-7-stroke.ttf": {
+    "file": "assets/Pe-icon-7-stroke-StViNhRx.ttf",
+    "src": "resources/fonts/Pe-icon-7-stroke.ttf"
+  },
+  "resources/fonts/Pe-icon-7-stroke.woff": {
+    "file": "assets/Pe-icon-7-stroke-B9oEZD7G.woff",
+    "src": "resources/fonts/Pe-icon-7-stroke.woff"
+  },
+  "resources/fonts/materialdesignicons-webfont.eot": {
+    "file": "assets/materialdesignicons-webfont-BQCa5tJF.eot",
+    "src": "resources/fonts/materialdesignicons-webfont.eot"
+  },
+  "resources/fonts/materialdesignicons-webfont.ttf": {
+    "file": "assets/materialdesignicons-webfont-Cn62PbgK.ttf",
+    "src": "resources/fonts/materialdesignicons-webfont.ttf"
+  },
+  "resources/fonts/materialdesignicons-webfont.woff": {
+    "file": "assets/materialdesignicons-webfont-C511NGqJ.woff",
+    "src": "resources/fonts/materialdesignicons-webfont.woff"
+  },
+  "resources/fonts/materialdesignicons-webfont.woff2": {
+    "file": "assets/materialdesignicons-webfont-DNASE6E2.woff2",
+    "src": "resources/fonts/materialdesignicons-webfont.woff2"
+  },
   "resources/js/app.js": {
-    "file": "assets/app-DSvcmoLT.js",
+    "file": "assets/app-BXUdq1yv.js",
     "name": "app",
     "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/gumshoe.polyfills.min.js": {
+    "file": "assets/gumshoe.polyfills.min-BrrBOxjc.js",
+    "name": "gumshoe.polyfills.min",
+    "src": "resources/js/gumshoe.polyfills.min.js",
+    "isEntry": true
+  },
+  "resources/js/smooth-scroll.polyfills.min.js": {
+    "file": "assets/smooth-scroll.polyfills.min-ln1R5ueN.js",
+    "name": "smooth-scroll.polyfills.min",
+    "src": "resources/js/smooth-scroll.polyfills.min.js",
     "isEntry": true
   }
 }

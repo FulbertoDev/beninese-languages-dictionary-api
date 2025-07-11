@@ -22,25 +22,14 @@ class PaymentForm extends Component
     public $amount;
     public $reason;
     public $minAmount;
-
     public $deviceUuidFound = false;
     public $deviceStepPassed = false;
 
-    public function mount()
+    public function mount(?string $action)
     {
-        /*
-        $this->lastName = $data['last_name'];
-        $this->firstName = $data['first_name'];
-        $this->phone = $data['contact'];
-        $this->deviceUuid = $data['deviceUuid'];
-        $this->amount = (int)$data['amount'];
-        $this->reason = $data['reason'];
-        if ($this->reason == "gift") {
-            $this->minAmount = 100;
-        } else {
-            $this->minAmount = 995;
-        }
-        */
+       if($action=='direct'){
+           $this->skipStep();
+       }
     }
 
     #[Computed]
@@ -107,7 +96,7 @@ class PaymentForm extends Component
 
     }
 
-    public function skipStep():void
+    public function skipStep(): void
     {
         $this->deviceStepPassed = true;
     }
@@ -116,11 +105,11 @@ class PaymentForm extends Component
     public function verifyDevice(): void
     {
         if (!isset($this->deviceUuid)) {
-            Toaster::error('Veuillez entrer l\'identifiant d\'installation');
+            Toaster::error('Veuillez entrer l\'identifiant d\'installation ou cliquer sur Passer');
             return;
         }
 
-        $device = Installation::findOrFail($this->deviceUuid);
+        $device = Installation::find($this->deviceUuid);
         if ($device) {
             $this->deviceUuidFound = true;
             $this->minAmount = $device->hasSubscribed ? 100 : 995;
