@@ -99,6 +99,7 @@ class PaymentForm extends Component
     public function skipStep(): void
     {
         $this->deviceStepPassed = true;
+        $this->reason = "gift";
     }
 
 
