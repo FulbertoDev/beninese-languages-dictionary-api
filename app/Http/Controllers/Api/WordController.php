@@ -94,6 +94,10 @@ class WordController extends Controller
 
     public function getWords(Request $request)
     {
+        $userAgent = $request->header('user-agent');
+        if ($userAgent != "Dart/3.8 (dart:io)") {
+            return response()->json(null, 400);
+        }
 
         $perPage = $request->query('per_page', 10);
         $searchInFrench = $request->query('searchInFrench');
