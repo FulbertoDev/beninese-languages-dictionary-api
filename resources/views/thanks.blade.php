@@ -60,7 +60,8 @@
                     </div>
                 </div>
                 <div class="col-span-4 w-full py-10 lg:pb-0 lg:pt-0">
-                    <div class="bg-gray-100 rounded-lg p-4 text-gray-900 text-center flex flex-col space-y-2 items-center">
+                    <div
+                        class="bg-gray-100 rounded-lg p-4 text-gray-900 text-center flex flex-col space-y-2 items-center">
                         <img class="h-20" src="{{asset("images/logo.png")}}" alt="">
                         <span class="text-xl font-bold text-gray-800 block">Merci pour votre soutien !</span>
                         <span class="text-gray-800 text-center">

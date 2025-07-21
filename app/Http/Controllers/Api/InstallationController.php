@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Installation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class InstallationController extends Controller
@@ -32,12 +33,14 @@ class InstallationController extends Controller
         ]);
     }
 
-    public function checkDeviceSubscription(string $id)
+    public function checkDeviceSubscription(Request $request, string $id)
     {
+        $headers = $request->headers->all();
+        Log::info("Headers: " . json_encode($headers));
         $installation = Installation::findOrFail($id);
         return response()->json([
             "deviceUuid" => $installation->id,
-            "hasSubscribed"=> (bool) $installation->hasSubscribed,
+            "hasSubscribed" => (bool)$installation->hasSubscribed,
         ]);
     }
 }
