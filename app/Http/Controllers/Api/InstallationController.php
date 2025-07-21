@@ -36,6 +36,13 @@ class InstallationController extends Controller
     public function checkDeviceSubscription(Request $request, string $id)
     {
         $headers = $request->headers->all();
+        $userAgent = $request->header('user-agent');
+        if ($userAgent != "Dart 3.8 (dart:io)") {
+            Log::info("Not from device");
+            return response()->json(null, 400);
+        }
+        Log::info("Launched from device");
+
         Log::info("Headers: " . json_encode($headers));
         $installation = Installation::findOrFail($id);
         return response()->json([
