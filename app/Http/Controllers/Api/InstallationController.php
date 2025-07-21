@@ -36,9 +36,8 @@ class InstallationController extends Controller
     public function checkDeviceSubscription(Request $request, string $id)
     {
         $userAgent = $request->header('user-agent');
-        Log::info("Uset AGent=>" . $userAgent);
 
-        if ($userAgent[0] != "Dart 3.8 (dart:io)") {
+        if ($userAgent[0] != "Dart/3.8 (dart:io)") {
             Log::info("Not from device");
             return response()->json(null, 400);
         }
