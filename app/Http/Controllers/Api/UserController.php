@@ -2,44 +2,54 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\NewUserCreated;
 use App\Helpers\RolesEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Mail\NewUserCreated as MailNewUserCreated;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
 
     public function create(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|max:255|unique:users',
             'role' => 'required|string|max:255',
         ]);
+
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
+
+        $defaultPassword = Str::password(8, symbols: false);
 
         $user = User::create([
             "name" => $request->get('name'),
             "email" => $request->get('email'),
             'email_verified_at' => now(),
-            'password' => Hash::make('azerty'),
+            'password' => $defaultPassword,
         ]);
 
-        $role = Role::where('name',$request->get('role'))->first();
-
+        $role = Role::where('name', $request->get('role'))->first();
         $user->assignRole($role);
 
-        $data = UserResource::make(User::find($user->id));
+        $finalUser = User::find($user->id);
 
-        return response()->json($data);
+        NewUserCreated::dispatch($finalUser);
 
+        $data = UserResource::make($finalUser);
+
+        return response()->json(["data"=>$data,"password"=>$defaultPassword]);
     }
 
     public function getUsers(Request $request)
@@ -53,5 +63,4 @@ class UserController extends Controller
         $user = $request->user();
         return response()->json(UserResource::make($user));
     }
-
 }

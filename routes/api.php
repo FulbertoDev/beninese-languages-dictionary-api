@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
+    Route::post('/users/set-password', [AuthController::class, 'setPassword']);
 });
 
 

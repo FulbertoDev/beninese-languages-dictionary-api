@@ -12,8 +12,8 @@ enum RolesEnum: string
     public function label(): string
     {
         return match ($this) {
-            self::ADMIN_ROLE => 'Administrator',
-            self::HELPER_ROLE => 'Volunteer',
+            self::ADMIN_ROLE => 'Administrateur',
+            self::HELPER_ROLE => 'Contributeur',
         };
     }
 }

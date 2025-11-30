@@ -26,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'isActive',
+        'isDisabled',
     ];
 
     /**
@@ -49,6 +50,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'isActive' => 'boolean',
+            'isDisabled' => 'boolean',
         ];
     }
 }

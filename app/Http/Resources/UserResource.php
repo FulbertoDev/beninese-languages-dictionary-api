@@ -25,6 +25,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'isActive' => $this->isActive,
+            'isDisabled' => $this->isDisabled,
             'role' => RoleResource::make(Role::where('name', $this->getRoleNames()[0])->first()),
         ];
     }
