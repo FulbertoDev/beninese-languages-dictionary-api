@@ -98,7 +98,7 @@ class WordController extends Controller
     public function getWords(Request $request)
     {
         $userAgent = $request->header('user-agent');
-        if (in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
+        if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
             return response()->json(null, 400);
         }
 
