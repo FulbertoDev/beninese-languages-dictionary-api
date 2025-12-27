@@ -18,6 +18,15 @@ class Word extends Model
         'inFrench',
         'inFongbe',
         'inYoruba',
+        'inBariba',
+        'inAdja',
+        'inBatonou',
+        'inDendi',
+        'inDitamari',
+        'inFulfulde',
+        'inGengbe',
+        'inGungbe',
+        'inYom',
         'isValidated'
     ];
 

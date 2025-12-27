@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\AuthorizedUserAgents;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WordResource;
 use App\Models\Audio;
 use App\Models\Expression;
 use App\Models\Release;
 use App\Models\Word;
+use Dedoc\Scramble\Attributes\HeaderParameter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -92,10 +94,11 @@ class WordController extends Controller
         ]);
     }
 
+    #[HeaderParameter('User-Agent', 'User-Agent', type: 'string')]
     public function getWords(Request $request)
     {
         $userAgent = $request->header('user-agent');
-        if ($userAgent != "Dart/3.8 (dart:io)") {
+        if (in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
             return response()->json(null, 400);
         }
 

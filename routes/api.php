@@ -4,6 +4,8 @@ use App\Helpers\RolesEnum;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\InstallationController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\PendingExpressionController;
+use App\Http\Controllers\Api\PendingWordController;
 use App\Http\Controllers\Api\ReleaseController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\StatsController;
@@ -28,11 +30,24 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/clear-payments', [PaymentController::class, 'clear']);
         Route::get('/stats', [StatsController::class, 'index']);
-        Route::get('/get-words', [WordController::class, 'getWords']);
     });
-    Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
+    Route::get('/get-words', [WordController::class, 'getWords']);
+
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
     Route::post('/users/set-password', [AuthController::class, 'setPassword']);
+
+    Route::get('/pending-words', [WordController::class, 'fetchPendingWords']);
+
+    Route::post('/pending-words/create', [PendingWordController::class, 'create']);
+    Route::get('/pending-words/{id}', [PendingWordController::class, 'show']);
+    Route::get('/count-pending-words', [PendingWordController::class, 'countPendingWords']);
+    Route::put('/pending-words/{id}', [PendingWordController::class, 'update']);
+
+    Route::post('/pending-expressions/create', [PendingExpressionController::class, 'create']);
+    Route::get('/pending-expressions/{id}', [PendingExpressionController::class, 'show']);
+    Route::get('/count-pending-expressions', [PendingExpressionController::class, 'countPendingExpressions']);
+    Route::put('/pending-expressions/{id}', [PendingExpressionController::class, 'update']);
+
 });
 
 

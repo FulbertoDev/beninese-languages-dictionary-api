@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\AddCustomHeaderExtension;
 use App\Http\Middleware\RestrictedApiAccess;
 use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
 
@@ -108,5 +109,7 @@ return [
         RestrictedApiAccess::class,
     ],
 
-    'extensions' => [],
+    'extensions' => [
+        AddCustomHeaderExtension::class
+    ],
 ];

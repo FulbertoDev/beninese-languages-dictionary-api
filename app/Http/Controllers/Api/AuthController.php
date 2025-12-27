@@ -19,12 +19,19 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'password' => 'required|string'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors());
+        }
+
+        $user = User::where('email', $request->email);
+        if ($user->count() <= 0) {
+            return response()->json([
+                'message' => AuthErrors::INVALID_CREDENTIALS
+            ], 401);
         }
 
         $credentials = $request->only('email', 'password');
@@ -36,7 +43,7 @@ class AuthController extends Controller
 
         $user = User::where("email", $request->email)->firstOrFail();
 
-        if($user->isDisabled){
+        if ($user->isDisabled) {
             return response()->json([
                 'message' => AuthErrors::ACCOUNT_DISABLED
             ], 401);
@@ -80,14 +87,18 @@ class AuthController extends Controller
         if ($user->email != $email) {
             return response()->json([
                 'message' => AuthErrors::ACCOUNT_MISMATCH
-            ], 419);
+            ], 422);
         }
-
+        if ($user->isDisabled) {
+            return response()->json([
+                'message' => AuthErrors::ACCOUNT_DISABLED
+            ], 422);
+        }
 
         if ($user->isActive) {
             return response()->json([
                 'message' => AuthErrors::ACCOUNT_ALREADY_ACTIVE
-            ], 419);
+            ], 422);
         }
 
 
@@ -96,6 +107,8 @@ class AuthController extends Controller
         $user->isActive = true;
         $user->save();
 
-        return response()->json(UserResource::make($user));
+        $result = User::findOrFail($user->id);
+
+        return response()->json(UserResource::make($result));
     }
 }

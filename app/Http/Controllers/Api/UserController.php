@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -23,7 +24,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:users',
             'role' => 'required|string|max:255',
         ]);
 
@@ -31,7 +32,7 @@ class UserController extends Controller
             return response()->json($validator->errors());
         }
 
-        $defaultPassword = Str::password(8, symbols: false);
+        $defaultPassword = explode("@", $request->get('email'))[0]; /*Str::password(8, symbols: false);*/
 
         $user = User::create([
             "name" => $request->get('name'),
@@ -49,12 +50,14 @@ class UserController extends Controller
 
         $data = UserResource::make($finalUser);
 
-        return response()->json(["data"=>$data,"password"=>$defaultPassword]);
+        Log::info('Password: ' . $defaultPassword);
+
+        return response()->json($data);
     }
 
     public function getUsers(Request $request)
     {
-        $users = User::where('id', '!=', 1)->get();
+        $users = User::all();
         return response()->json(UserResource::collection($users));
     }
 
