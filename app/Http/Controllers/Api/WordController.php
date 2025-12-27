@@ -98,18 +98,9 @@ class WordController extends Controller
     public function getWords(Request $request)
     {
         $userAgent = $request->header('user-agent');
-
-        Log::info('UserAgent: ' . $userAgent);
-        if ($userAgent == null) {
+        if ($userAgent != "Dart/3.8 (dart:io)") {
             return response()->json(null, 400);
         }
-        if ($userAgent != AuthorizedUserAgents::dart_3_8 && $userAgent != AuthorizedUserAgents::dart_3_10_4) {
-            return response()->json(null, 400);
-        }
-        /*
-        if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
-            return response()->json(null, 400);
-        }*/
 
         $perPage = $request->query('per_page', 10);
         $searchInFrench = $request->query('searchInFrench');
