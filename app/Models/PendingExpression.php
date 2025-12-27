@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Expression extends Model
+class PendingExpression extends Model
 {
+    /** @use HasFactory<\Database\Factories\PendingExpressionFactory> */
     use HasFactory;
 
     use HasUlids;
-
 
     protected $fillable = [
         'inFrench',
@@ -29,9 +29,9 @@ class Expression extends Model
         'inYom',
     ];
 
-
-    public function word(): BelongsTo
+    public function expression(): BelongsTo
     {
-        return $this->belongsTo(Word::class);
+        return $this->belongsTo(Expression::class);
     }
+
 }
