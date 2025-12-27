@@ -22,6 +22,10 @@ class WordController extends Controller
      */
     public function fetch()
     {
+        $userAgent = Request::input("user-agent");
+        if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
+            return response()->json([], 404);
+        }
         $releaseCount = Release::all()->pluck('id')->count();
         if ($releaseCount <= 0) {
             return response()->json([], 404);
@@ -98,6 +102,7 @@ class WordController extends Controller
     public function getWords(Request $request)
     {
         $userAgent = $request->header('user-agent');
+        Log::info('User-Agent: ' . $userAgent);
         if ($userAgent != "Dart/3.8 (dart:io)") {
             return response()->json(null, 400);
         }
