@@ -12,6 +12,7 @@ use App\Models\Word;
 use Dedoc\Scramble\Attributes\HeaderParameter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Log;
 
 class WordController extends Controller
 {
@@ -94,17 +95,15 @@ class WordController extends Controller
         ]);
     }
 
-    #[HeaderParameter('User-Agent', 'User-Agent', type: 'string')]
     public function getWords(Request $request)
     {
         $userAgent = $request->header('user-agent');
+
+        Log::info('UserAgent: ' . $userAgent);
         if ($userAgent == null) {
             return response()->json(null, 400);
         }
-        if ($userAgent != AuthorizedUserAgents::dart_3_8) {
-            return response()->json(null, 400);
-        }
-        if ($userAgent != AuthorizedUserAgents::dart_3_10_4) {
+        if ($userAgent != AuthorizedUserAgents::dart_3_8 && $userAgent != AuthorizedUserAgents::dart_3_10_4) {
             return response()->json(null, 400);
         }
         /*
