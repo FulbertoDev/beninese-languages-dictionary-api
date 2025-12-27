@@ -20,9 +20,9 @@ class WordController extends Controller
     /**
      * @unauthenticated
      */
-    public function fetch()
+    public function fetch(Request $request)
     {
-        $userAgent = Request::input("user-agent");
+        $userAgent = $request->header('user-agent');
         if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
             return response()->json([], 404);
         }
@@ -101,7 +101,7 @@ class WordController extends Controller
 
     public function getWords(Request $request)
     {
-        $userAgent = Request::input("user-agent");
+        $userAgent = $request->header('user-agent');
         if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
             return response()->json([], 404);
         }
