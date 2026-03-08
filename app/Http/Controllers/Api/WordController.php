@@ -9,10 +9,8 @@ use App\Models\Audio;
 use App\Models\Expression;
 use App\Models\Release;
 use App\Models\Word;
-use Dedoc\Scramble\Attributes\HeaderParameter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Log;
 
 class WordController extends Controller
 {
@@ -23,7 +21,10 @@ class WordController extends Controller
     public function fetch(Request $request)
     {
         $userAgent = $request->header('user-agent');
-        if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
+        $isAuthorizedUserAgent = in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents);
+        $isAuthorizedOrigin = $request->header('origin') == AuthorizedUserAgents::authorizedOrigin;
+
+        if (!$isAuthorizedUserAgent && !$isAuthorizedOrigin) {
             return response()->json([], 404);
         }
         $releaseCount = Release::all()->pluck('id')->count();
@@ -102,10 +103,12 @@ class WordController extends Controller
     public function getWords(Request $request)
     {
         $userAgent = $request->header('user-agent');
-        if (!in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents)) {
+        $isAuthorizedUserAgent = in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents);
+        $isAuthorizedOrigin = $request->header('origin') == AuthorizedUserAgents::authorizedOrigin;
+
+        if (!$isAuthorizedUserAgent && !$isAuthorizedOrigin) {
             return response()->json([], 404);
         }
-
         $perPage = $request->query('per_page', 10);
         $searchInFrench = $request->query('searchInFrench');
         $searchInFongbe = $request->query('searchInFongbe');
