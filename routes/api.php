@@ -27,10 +27,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/permissions', [RoleController::class, 'getPermissions']);
         Route::post('/release', [ReleaseController::class, 'store']);
         Route::get('/setup-db', [WordController::class, 'import']);
+        Route::delete('/delete-word/{id}', [WordController::class, 'destroy']);
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/clear-payments', [PaymentController::class, 'clear']);
         Route::get('/stats', [StatsController::class, 'index']);
     });
+
+
+    Route::post('/create-word', [WordController::class, 'create']);
     Route::get('/get-words', [WordController::class, 'getWords']);
 
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
@@ -47,7 +51,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/pending-expressions/{id}', [PendingExpressionController::class, 'show']);
     Route::get('/count-pending-expressions', [PendingExpressionController::class, 'countPendingExpressions']);
     Route::put('/pending-expressions/{id}', [PendingExpressionController::class, 'update']);
-
 });
 
 
