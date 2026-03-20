@@ -2,6 +2,7 @@
 
 use App\Helpers\RolesEnum;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ExpressionController;
 use App\Http\Controllers\Api\InstallationController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\PendingExpressionController;
@@ -35,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::post('/create-word', [WordController::class, 'create']);
+    Route::post('/create-expression', [ExpressionController::class, 'create']);
     Route::get('/get-words', [WordController::class, 'getWords']);
 
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);

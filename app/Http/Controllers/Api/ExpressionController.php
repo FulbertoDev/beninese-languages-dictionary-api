@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ExpressionResource;
 use App\Http\Resources\PendingExpressionResource;
 use App\Models\Expression;
 use App\Models\PendingExpression;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PendingExpressionController extends Controller
+class ExpressionController extends Controller
 {
 
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'expression_id' => 'required|string',
-            'inFrench' => 'string|nullable',
+            'word_id' => 'required|string',
+            'inFrench' => 'string|required',
             'inYoruba' => 'string|nullable',
             'inFongbe' => 'string|nullable',
             'inBariba' => 'string|nullable',
@@ -32,48 +33,11 @@ class PendingExpressionController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-
-        $expression_id = $request->expression_id;
-        $inFrench = $request->inFrench;
-        $inYoruba = $request->inYoruba;
-        $inFongbe = $request->inFongbe;
-        $inBariba = $request->inBariba;
-        $inAdja = $request->inAdja;
-        $inBatonou = $request->inBatonou;
-        $inDendi = $request->inDendi;
-        $inDitamari = $request->inDitamari;
-        $inFulfulde = $request->inFulfulde;
-        $inGengbe = $request->inGengbe;
-        $inGungbe = $request->inGungbe;
-        $inYom = $request->inYom;
-
-        $expression = Expression::find($expression_id);
-
-        if (!isset($expression)) {
-            return response()->json([
-                'message' => 'Expression is required'
-            ], 404);
-        }
-
-        $pendingExpression = new PendingExpression();
-        $pendingExpression->expression_id = $expression_id;
-        $pendingExpression->inFrench = $inFrench;
-        $pendingExpression->inFongbe = $inFongbe;
-        $pendingExpression->inBariba = $inBariba;
-        $pendingExpression->inAdja = $inAdja;
-        $pendingExpression->inYoruba = $inYoruba;
-        $pendingExpression->inBatonou = $inBatonou;
-        $pendingExpression->inDendi = $inDendi;
-        $pendingExpression->inDitamari = $inDitamari;
-        $pendingExpression->inFulfulde = $inFulfulde;
-        $pendingExpression->inGengbe = $inGengbe;
-        $pendingExpression->inGungbe = $inGungbe;
-        $pendingExpression->inYom = $inYom;
-        $pendingExpression->save();
+        $expression = Expression::create(attributes: $request->all());
 
         return response()->json([
-            'message' => 'Expression created successfully',
-            'word' => PendingExpressionResource::make($pendingExpression)
+            'message' => 'Expression added succesfully',
+            'data'=> ExpressionResource::make($expression)
         ]);
 
     }

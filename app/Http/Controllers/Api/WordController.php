@@ -9,7 +9,6 @@ use App\Models\Audio;
 use App\Models\Expression;
 use App\Models\Release;
 use App\Models\Word;
-use Illuminate\Container\Attributes\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;

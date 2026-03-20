@@ -15,6 +15,7 @@ class Expression extends Model
 
 
     protected $fillable = [
+        'word_id',
         'inFrench',
         'inFongbe',
         'inYoruba',
