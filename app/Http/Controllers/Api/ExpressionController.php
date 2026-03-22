@@ -121,6 +121,25 @@ class ExpressionController extends Controller
         return response()->json(PendingExpressionResource::make($pendingExpression));
     }
 
+    public function destroy($id)
+    {
+        $expression = Expression::findOrFail($id);
+
+        if ($expression->isValidated == true) {
+            return response()->json([
+                "message" => "Expression is already validated"
+            ], 403);
+        }
+
+        $expression->delete();
+
+        return response()->json([
+            "message" => "Expression successfully deleted"
+        ],  200);
+    }
+
+
+
 
     public function countPendingExpressions(Request $request)
     {

@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/release', [ReleaseController::class, 'store']);
         Route::get('/setup-db', [WordController::class, 'import']);
         Route::delete('/delete-word/{id}', [WordController::class, 'destroy']);
+        Route::delete('/delete-expression/{id}', [ExpressionController::class, 'destroy']);
         Route::get('/payments', [PaymentController::class, 'index']);
         Route::get('/clear-payments', [PaymentController::class, 'clear']);
         Route::get('/stats', [StatsController::class, 'index']);
