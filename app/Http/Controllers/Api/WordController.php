@@ -11,6 +11,7 @@ use App\Models\Expression;
 use App\Models\Release;
 use App\Models\Word;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -84,6 +85,7 @@ class WordController extends Controller
     public function fetch(Request $request)
     {
         $userAgent = $request->header('user-agent');
+        Log::debug('UserAgent'. $userAgent);
         $isAuthorizedUserAgent = in_array($userAgent, AuthorizedUserAgents::authorizedUserAgents);
         $isAuthorizedOrigin = $request->header('origin') == AuthorizedUserAgents::authorizedOrigin;
 
