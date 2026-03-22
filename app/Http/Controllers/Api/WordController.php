@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\AuthorizedUserAgents;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WordResource;
+use App\Http\Resources\AnyWordResource;
+use App\Http\Resources\ValidatedWordResource;
 use App\Models\Audio;
 use App\Models\Expression;
 use App\Models\Release;
@@ -36,7 +37,7 @@ class WordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(),400);
         }
 
         $word = Word::create($request->all());
@@ -71,7 +72,7 @@ class WordController extends Controller
 
         return response()->json([
             'message' => 'Word created successfully',
-            'word' => WordResource::make($response)
+            'word' => AnyWordResource::make($response)
         ]);
     }
 
@@ -108,7 +109,7 @@ class WordController extends Controller
             [
                 "count" => $count,
                 "version" => $latestRelease->versionCode,
-                "data" => WordResource::collection($words),
+                "data" => ValidatedWordResource::collection($words),
             ]
         );
     }
@@ -118,7 +119,7 @@ class WordController extends Controller
         $words = Word::whereIsvalidated(false)->get();
         $count = $words->count();
         return response()->json(
-            ["count" => $count, "data" => WordResource::collection($words),]
+            ["count" => $count, "data" => AnyWordResource::collection($words),]
         );
     }
 
@@ -165,7 +166,7 @@ class WordController extends Controller
         return response()->json([
             "success" => 'OK',
             "message" => $count . ' mots importés avec succès',
-            "initialWords" => WordResource::collection($free),
+            "initialWords" => ValidatedWordResource::collection($free),
         ]);
     }
 
@@ -215,7 +216,7 @@ class WordController extends Controller
         $searchInFongbe = $request->query('searchInFongbe');
 
         $words = Word::orderBy('inFrench')
-            ->whereIsvalidated(true)
+           // ->whereIsvalidated(true)
             ->when($searchInFongbe, function ($query, $search) {
                 return $query->where('inFongbe', 'like', "%{$search}%");
             })
@@ -224,6 +225,15 @@ class WordController extends Controller
             })
             ->paginate($perPage);
 
-        return WordResource::collection($words);
+        return AnyWordResource::collection($words);
+    }
+
+
+    public function getWordById($id)
+    {
+        $word = Word::findOrFail($id);
+        $data = AnyWordResource::make($word);
+
+        return response()->json($data,  200);
     }
 }

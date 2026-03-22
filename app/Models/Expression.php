@@ -31,6 +31,12 @@ class Expression extends Model
     ];
 
 
+    protected $casts = [
+        'isValidated' => 'boolean'
+    ];
+
+
+
     public function word(): BelongsTo
     {
         return $this->belongsTo(Word::class);

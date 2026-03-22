@@ -15,7 +15,7 @@ class ExpressionController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'word_id' => 'required|string',
+            'word_id' => 'string|required',
             'inFrench' => 'string|required',
             'inYoruba' => 'string|nullable',
             'inFongbe' => 'string|nullable',
@@ -31,9 +31,24 @@ class ExpressionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(),400);
         }
-        $expression = Expression::create(attributes: $request->all());
+
+        $expression = new Expression();
+        $expression->inFrench = $request->inFrench;
+        $expression->inFongbe = $request->inFongbe;
+        $expression->inYoruba = $request->inYoruba;
+        $expression->inBariba = $request->inBariba;
+        $expression->inAdja = $request->inAdja;
+        $expression->inBatonou = $request->inBatonou;
+        $expression->inDendi = $request->inDendi;
+        $expression->inDitamari = $request->inDitamari;
+        $expression->inFulfulde = $request->inFulfulde;
+        $expression->inGengbe = $request->inGengbe;
+        $expression->inGungbe = $request->inGungbe;
+        $expression->inYom = $request->inYom;
+        $expression->word_id = $request->word_id;
+        $expression->save();
 
         return response()->json([
             'message' => 'Expression added succesfully',

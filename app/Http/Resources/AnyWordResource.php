@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ExpressionResource extends JsonResource
+class AnyWordResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,7 @@ class ExpressionResource extends JsonResource
             "inFrench" => $this->inFrench,
             "inFongbe" => $this->inFongbe,
             "inYoruba" => $this->inYoruba,
-            "inBariba"=> $this->inBariba,
+            "inBariba" => $this->inBariba,
             "inAdja" => $this->inAdja,
             "inBatonou" => $this->inBatonou,
             "inDendi" => $this->inDendi,
@@ -29,6 +29,10 @@ class ExpressionResource extends JsonResource
             "inGungbe" => $this->inGungbe,
             "inYom" => $this->inYom,
             "isValidated" => $this->isValidated,
+            "expressions" => ExpressionResource::collection(
+                $this->expressions
+            ),
+            "audio" => AudioResource::make($this->audio)
         ];
     }
 }

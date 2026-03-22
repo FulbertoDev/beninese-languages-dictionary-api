@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/create-word', [WordController::class, 'create']);
     Route::post('/create-expression', [ExpressionController::class, 'create']);
     Route::get('/get-words', [WordController::class, 'getWords']);
+    Route::get('/get-words/{id}', [WordController::class, 'getWordById']);
 
     Route::get('/suggestions', [SuggestionController::class, 'getSuggestions']);
     Route::post('/users/set-password', [AuthController::class, 'setPassword']);
