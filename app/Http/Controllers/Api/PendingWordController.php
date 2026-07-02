@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 
 use App\Http\Resources\PendingWordResource;
@@ -133,14 +134,20 @@ class PendingWordController extends Controller
     public function show(Request $request, $id)
     {
         $pendingWord = PendingWord::where('word_id', $id)->count();
+        $newWord = Word::whereIsvalidated(false)->where('id', $id)->count();
 
-        if ($pendingWord == 0) {
+        if ($pendingWord == 0 && $newWord == 0) {
             return response()->json([
                 'message' => 'Word not found ' . $id
             ], 404);
         }
-        $pendingWord = PendingWord::where('word_id', $id)->first();
-        return response()->json(PendingWordResource::make($pendingWord));
+        if ($pendingWord > 0) {
+            $response = PendingWord::where('word_id', $id)->first();
+        } else {
+            $response = Word::where('id', $id)->first();
+        }
+        return response()->json(PendingWordResource::make($response));
+
     }
 
     public function countPendingWords(Request $request)
